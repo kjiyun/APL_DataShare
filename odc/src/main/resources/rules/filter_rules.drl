@@ -1,0 +1,17 @@
+package rules;
+dialect  "mvel"
+import com.dtest.drools.patients.PatientData;
+
+
+rule "Heart Failure Screening"
+    no-loop true
+    lock-on-active true
+
+when
+    $data : PatientData(
+        heartRate > 100 || heartRate < 60,
+        oxygenSaturation < 90
+    )
+then
+    System.out.println("Potential heart failure detected for patient: " + $data);
+end
