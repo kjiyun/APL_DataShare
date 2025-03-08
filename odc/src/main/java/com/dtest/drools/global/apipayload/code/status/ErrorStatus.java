@@ -26,6 +26,10 @@ public enum ErrorStatus implements BaseCode {
 
     REDIS_NOT_FOUND(HttpStatus.NOT_FOUND, "REDIS_NOT_FOUND", "Redis를 찾을 수 없습니다."),
 
+    CANNOT_UPLOAD_S3(HttpStatus.BAD_REQUEST, "CANNOT_UPLOAD_S3", "S3 파일 업로드를 실패했습니다."),
+    CSV_IS_EMPTY(HttpStatus.NOT_FOUND, "CSV_IS_EMPTY", "CSV 파일이 비어 있습니다."),
+//    RULE_ERROR(HttpStatus.)
+
     DROOLS_FAIL_RESET(HttpStatus.BAD_REQUEST, "DROOLS_FAIL_RESET", "Drools 초기화를 실패했습니다.");
 
 

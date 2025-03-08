@@ -7,6 +7,9 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
 public class S3Config {
@@ -28,6 +31,14 @@ public class S3Config {
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))
                 .withRegion(s3Region)
+                .build();
+    }
+
+    @Bean
+    public S3Client s3Client() {
+        return S3Client.builder()
+                .region(Region.of(s3Region)) // 서울 리전
+                .credentialsProvider(ProfileCredentialsProvider.create()) // AWS CLI 자격증명 사용
                 .build();
     }
 }
