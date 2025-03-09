@@ -7,6 +7,7 @@ import org.kie.internal.io.ResourceFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.kie.api.KieServices;
+
 import java.io.IOException;
 
 @Configuration
