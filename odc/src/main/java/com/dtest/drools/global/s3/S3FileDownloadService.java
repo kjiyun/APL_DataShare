@@ -30,23 +30,28 @@ public class S3FileDownloadService {
         return tempFile;
     }
 
-    public File unzipFile(File zipFile, String extractFileName) throws IOException {
-        File extractFile = new File(System.getProperty("java.io.tmpdir"), extractFileName);
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
-             FileOutputStream fos = new FileOutputStream(extractFile)) {
-            ZipEntry zipEntry;
+public File unzipFile(File zipFile, String targetFileName) throws IOException {
+    byte[] buffer = new byte[1024];
+    File destDir = new File(zipFile.getParent(), "unzipped");
+    if (!destDir.exists()) destDir.mkdirs();
 
-            while ((zipEntry = zis.getNextEntry()) != null) {
-                if (zipEntry.getName().equals(extractFileName)) { // 원하는 파일만 추출
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = zis.read(buffer)) != -1) {
-                        fos.write(buffer, 0, bytesRead);
-                    }
-                    break;
+    try (ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile))) {
+        ZipEntry zipEntry = zis.getNextEntry();
+        while (zipEntry != null) {
+            File newFile = new File(destDir, zipEntry.getName());
+            try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
                 }
             }
+            if (newFile.getName().equals(targetFileName)) {
+                return newFile;
+            }
+            zipEntry = zis.getNextEntry();
         }
-        return extractFile;
+        zis.closeEntry();
     }
+    throw new FileNotFoundException("File " + targetFileName + " not found in ZIP");
+}
 }
