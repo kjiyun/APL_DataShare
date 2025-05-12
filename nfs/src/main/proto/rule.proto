@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "datashare.nfs";
+option java_outer_classname = "RuleProto";
+
+service RuleService {
+  rpc UploadRule (RuleRequest) returns (AckResponse);
+}
+
+message RuleRequest {
+  string rule_id = 1;
+  string uploaded_by = 2; // 클라이언트 식별용 (UDC id)
+  string disease_code = 3; // 질병 코드
+  bytes rule_file = 4; // .drl 파일 전송
+  bytes frame_file = 5; // frame.json 내용
+  string sha256_hash = 6; // 무결성 검증용
+}
+
+message AckResponse {
+  bool success = 1;
+  string message = 2; // ex: "Rule accepted"
+}
