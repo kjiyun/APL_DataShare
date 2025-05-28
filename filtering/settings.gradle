@@ -1,0 +1,11 @@
+rootProject.name = 'APL_Code'
+
+include 'filtering'
+include 'nfs'
+include 'odc'
+include 'udc'
+
+project(':filtering').projectDir = file('filtering')
+project(':nfs').projectDir = file('nfs')
+project(':odc').projectDir = file('odc')
+project(':udc').projectDir = file('udc')

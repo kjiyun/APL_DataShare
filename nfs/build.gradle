@@ -1,0 +1,88 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.4"
+	}
+}
+
+plugins {
+	id 'java-library'
+	id 'com.google.protobuf' version '0.9.4'
+}
+
+group = 'datashare'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+	withJavadocJar()
+	withSourcesJar()
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	protobufVersion = '3.25.3'
+	grpcVersion = '1.62.2'
+}
+
+dependencies {
+
+	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+	implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+
+	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api:2.1.1"
+}
+
+protobuf {
+	protoc {
+		artifact = "com.google.protobuf:protoc:${protobufVersion}"
+	}
+	plugins {
+		grpc {
+			artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+		}
+	}
+	generateProtoTasks {
+		all().each { task ->
+			task.plugins {
+				grpc {}
+			}
+		}
+	}
+}
+
+sourceSets {
+	main {
+		proto {
+			srcDir "src/main/proto"
+		}
+		java {
+			srcDirs += "build/generated/source/proto/main/java"
+			srcDirs += "build/generated/source/proto/main/grpc"
+		}
+	}
+}
+
+tasks.processResources {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'apl'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    droolsVersion = '7.67.0.Final'
+}
+
+dependencies {
+    // Drools
+//    implementation 'org.drools:drools-core:10.0.0'
+//    implementation 'org.drools:drools-compiler:10.0.0'
+//    implementation 'org.drools:drools-decisiontables:10.0.0'
+//    implementation 'org.drools:drools-templates:10.0.0'
+//    implementation 'org.drools:drools-traits:10.0.0'
+//    implementation 'org.drools:drools-xml-support:10.0.0'
+//    implementation 'org.kie:kie-api:10.0.0'
+//    implementation 'org.kie:kie-internal:10.0.0'
+
+    implementation "org.kie:kie-api:${droolsVersion}"
+    implementation "org.kie:kie-internal:${droolsVersion}"
+    implementation("org.kie:kie-ci:${droolsVersion}") {
+        exclude group: "org.drools", module: "drools-xml-support"
+    }
+    implementation "org.drools:drools-core:${droolsVersion}"
+    implementation("org.drools:drools-compiler:${droolsVersion}") {
+        exclude group: "org.drools", module: "drools-xml-support"
+    }
+    implementation "org.drools:drools-mvel:${droolsVersion}"
+
+    // openCSV
+    implementation 'com.opencsv:opencsv:5.9'
+
+    // Json
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.bootJar {
+    archiveFileName.set("filtering.jar")
+}
