@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: odc
+
+grpc:
+  server:
+    port: 9090
