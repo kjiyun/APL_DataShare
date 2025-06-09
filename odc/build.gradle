@@ -1,0 +1,82 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'datashare'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	grpcVersion = '1.62.2'
+	droolsVersion = '7.67.0.Final'
+}
+
+dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // 자동으로 db 연결 시도
+	implementation 'org.springframework.boot:spring-boot-starter'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// yidongnan/grpc-spring-boot-starter 참고
+//	implementation 'net.devh:grpc-spring-boot-starter:2.15.0.RELEASE'
+	// proto 파일이 nfs에 있으므로 참조 필요
+	implementation project(":nfs")
+	implementation project(":filtering")
+
+	implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+
+	// Drools 의존성 추가
+	implementation(project(":filtering")) {
+		exclude group: "org.drools", module: "drools-xml-support"
+	}
+
+	implementation "org.kie:kie-api:${droolsVersion}"
+	implementation "org.kie:kie-internal:${droolsVersion}"
+	implementation "org.drools:drools-core:${droolsVersion}"
+	implementation "org.drools:drools-compiler:${droolsVersion}"
+	implementation "org.kie:kie-ci:${droolsVersion}"
+	implementation "org.drools:drools-mvel:${droolsVersion}"
+	implementation 'javax.inject:javax.inject:1'
+
+	// openCSV
+	implementation 'com.opencsv:opencsv:5.9'
+
+	// Json
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+}
+
+configurations.all {
+	resolutionStrategy.eachDependency { details ->
+		if (details.requested.group == 'org.kie' || details.requested.group == 'org.drools') {
+			details.useVersion droolsVersion
+		}
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
