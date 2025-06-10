@@ -1,0 +1,18 @@
+{
+  "odcAttributes": [
+    "index",
+    "triage_sbp",
+    "triage_resprate",
+    "chiefcomplaint",
+    "triage_heartrate",
+    "triage_o2sat"
+  ],
+  "udcAttributes": [
+    "진료 기록 ID",
+    "수축기 혈압",
+    "호흡률",
+    "호소 증상",
+    "심장 박동수",
+    "산소 포화도"
+  ]
+}

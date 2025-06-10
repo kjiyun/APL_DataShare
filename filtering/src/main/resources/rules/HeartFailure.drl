@@ -1,0 +1,19 @@
+package rules;
+
+import apl.filtering.frame.DataRecord
+import apl.filtering.global.util.CSVHandler
+import java.util.List
+
+global CSVHandler csvHandler;
+
+dialect "mvel"
+
+rule "HeartFailure"
+    when
+        $mr : DataRecord(
+            (heartRate > 100 || heartRate < 60) &&
+            oxygenSaturation < 90
+        )
+    then
+        csvHandler.write($mr.getAttributes(), getRule().getName());
+end
