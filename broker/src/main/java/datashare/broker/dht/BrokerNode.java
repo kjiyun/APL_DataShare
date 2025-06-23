@@ -18,7 +18,6 @@ public class BrokerNode {
         this.ip = ip;
         this.port = port;
         this.id = HashUtil.sha1ToInt(ip + ":" + port);
-
     }
 
     public int getId() { return id; }
@@ -33,4 +32,11 @@ public class BrokerNode {
 
     public List<BrokerNode> getFingerTable() { return fingerTable; }
     public void setFingerTable(List<BrokerNode> fingerTable) { this.fingerTable = fingerTable; }
+
+    public void addFinger(BrokerNode node) { fingerTable.add(node); }
+
+    @Override
+    public String toString() {
+        return "Node{id=" + id + ", ip=" + ip + ", port=" + port + "}";
+    }
 }
