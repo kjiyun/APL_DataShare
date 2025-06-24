@@ -4,8 +4,10 @@ include 'nfs'
 include 'odc'
 include 'udc'
 include 'filtering'
+include 'broker'
 
 project(':nfs').projectDir = file('nfs')
 project(':odc').projectDir = file('odc')
 project(':udc').projectDir = file('udc')
 project(':filtering').projectDir = file('filtering')
+project(':broker').projectDir = file('broker')

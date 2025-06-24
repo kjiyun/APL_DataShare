@@ -3,12 +3,15 @@ package datashare.broker.dht;
 import lombok.Getter;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BrokerNode {
     private final int id;
     private final String ip;
     private final int port;
+    private static final int M = 32;
 
     private BrokerNode successor;
     private BrokerNode predecessor;
@@ -18,6 +21,7 @@ public class BrokerNode {
         this.ip = ip;
         this.port = port;
         this.id = HashUtil.sha1ToInt(ip + ":" + port);
+        this.fingerTable = new ArrayList<>(Collections.nCopies(M, null));
     }
 
     public int getId() { return id; }
@@ -34,6 +38,8 @@ public class BrokerNode {
     public void setFingerTable(List<BrokerNode> fingerTable) { this.fingerTable = fingerTable; }
 
     public void addFinger(BrokerNode node) { fingerTable.add(node); }
+    public BrokerNode getFinger(int index) { return fingerTable.get(index); }
+    public void setFinger(int index, BrokerNode node) { fingerTable.set(index, node); }
 
     @Override
     public String toString() {
