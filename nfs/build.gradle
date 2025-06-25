@@ -86,3 +86,35 @@ tasks.processResources {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+tasks.named('compileJava') {
+	dependsOn tasks.named("generateProto")
+}
+
+tasks.named('classes') {
+	dependsOn tasks.named("generateProto")
+}
+
+tasks.named('jar') {
+	dependsOn tasks.named("generateProto")
+	from("build/generated/source/proto/main/java")
+	from("build/generated/source/proto/main/grpc")
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.named('sourcesJar') {
+	dependsOn tasks.named("generateProto")
+
+	from(layout.buildDirectory.dir("generated/source/proto/main/java"))
+	from(layout.buildDirectory.dir("generated/source/proto/main/grpc"))
+
+	inputs.dir(layout.buildDirectory.dir("generated/source/proto/main/java"))
+	inputs.dir(layout.buildDirectory.dir("generated/source/proto/main/grpc"))
+
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jar {
+	archiveClassifier.set('')
+	from sourceSets.main.output
+}

@@ -25,7 +25,7 @@ repositories {
 }
 
 application {
-	mainClass = 'apl.udc.RuleUploader'
+	mainClass = 'apl.udc.UdcApplication'
 }
 
 ext {

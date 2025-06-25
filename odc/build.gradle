@@ -77,6 +77,10 @@ configurations.all {
 	}
 }
 
+tasks.named('compileJava') {
+	dependsOn(":nfs:jar")
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
