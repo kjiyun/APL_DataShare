@@ -1,9 +1,10 @@
 package datashare.odc.filtering;
 
-import datashare.odc.filtering.frame.Attribute;
-import datashare.odc.filtering.frame.DataRecord;
-import datashare.odc.filtering.global.util.CSVHandler;
-import datashare.odc.filtering.global.util.SavePath;
+
+import apl.filtering.frame.Attribute;
+import apl.filtering.frame.DataRecord;
+import apl.filtering.global.util.CSVHandler;
+import apl.filtering.global.util.SavePath;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.exceptions.CsvException;
@@ -62,7 +63,7 @@ public class FilteringRunner {
             csvHandler.write(udcAttributes, "label");
 
             // csvInputPath로부터 UDC의 CSV 데이터를 읽음
-            List<DataRecord> dataRecords = csvHandler.getDataRecords(csvInputPath, mappingInfo);
+            List<DataRecord> dataRecords = csvHandler.getDataRecords(mappingInfo);
 
             File ruleFile = new File(ruleFilePath);
             System.out.println("✅ 룰 파일 존재 여부: " + ruleFile.exists());

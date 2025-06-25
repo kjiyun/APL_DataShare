@@ -61,4 +61,18 @@ public class CSVHandler {
         csvWriter.close();
     }
 
+    public void writeResult(String outputPath, List<DataRecord> dataRecords) throws IOException {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(outputPath))) {
+            if (!dataRecords.isEmpty()) {
+                List<String> headers = dataRecords.get(0).getAttributes();
+                writer.writeNext(headers.toArray(new String[0]));
+            }
+
+            for (DataRecord dataRecord : dataRecords) {
+                List<String> values = dataRecord.getAttributes();
+                writer.writeNext(values.toArray(new String[0]));
+            }
+        }
+    }
+
 }
