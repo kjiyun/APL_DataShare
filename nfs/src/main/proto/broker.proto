@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+option java_package = "datashare.nfs";
+option java_outer_classname = "BrokerProto";
+
+
+service BrokerService {
+  // ODC가 자신의 질병 코드 광고
+  rpc SendAdvertisement(AdvertiseRequest) returns (Ack);
+
+  // UDC가 질병코드 기반 구독
+  rpc SendSubscription(SubscribeRequest) returns (Ack);
+
+  // 매칭된 ODC에게 알림
+  rpc NotifyMatch(Notification) returns (Ack);
+
+  // ODC가 자신의 속성 헤더를 broker를 통해 UDC로 전달
+  rpc SendAttributeValues(AttributeHeader) returns (Ack);
+
+  // ODC가 필터링 결과를 DHT에 저장한 후, 키 리스트 전달
+  rpc DeliverDHTKeys(DHTKeyList) returns (Ack);
+}
+
+message AdvertiseRequest {
+  string odc_id = 1;
+  string disease_code = 2; // 질병코드
+}
+
+message SubscribeRequest {
+  string udc_id = 1;
+  string disease_code = 2;
+}
+
+message Notification {
+  string disease_code = 1;
+  repeated string matched_odc_ids = 2;
+}
+
+message AttributeHeader {
+  string odc_id = 1;
+  map<string, string> attributes = 2;
+}
+
+message DHTKeyList {
+  string udc_id = 1;
+  string odc_id = 2;
+  repeated string keys = 3;
+  string description = 4;
+}
+
+message Ack {
+  bool success = 1;
+  string message = 2;
+}
