@@ -1,0 +1,20 @@
+package rules;
+
+import apl.filtering.frame.DataRecord
+import apl.filtering.global.util.CSVHandler
+import java.util.List
+
+global CSVHandler csvHandler;
+
+dialect "mvel"
+
+rule  "Sepsis"
+    when
+        $mr : DataRecord(
+            sbp < 100 &&
+            respirationRate > 22 &&
+            complaints.contains("altered")
+        )
+    then
+        csvHandler.write($mr.getAttributes(), getRule().getName());
+end
