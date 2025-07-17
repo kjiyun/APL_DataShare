@@ -9,7 +9,7 @@ public enum SavePath {
     FRAME("/app/filtering/src/main/java/apl/filtering/frame"),
     RULE("/app/filtering/src/main/resources/rules"),
     JSON("/app/data/mappingInfo.json"),
-    NEW_BUILD("/app/filtering");
+    NEW_BUILD("/filtering");
 
     private final String path;
 
