@@ -14,6 +14,10 @@ public class BrokerApplication {
 				.forPort(9090)
 				.addService(new BrokerServiceImpl())
 				.build();
+
+		System.out.println("[Broker] Starting server on port" + server.getPort());
+		server.start();
+		server.awaitTermination();
 	}
 
 }

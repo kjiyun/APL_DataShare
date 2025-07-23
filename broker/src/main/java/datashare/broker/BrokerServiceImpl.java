@@ -22,7 +22,7 @@ public class BrokerServiceImpl extends BrokerServiceGrpc.BrokerServiceImplBase {
     }
 
     @Override
-    public void SendSubscription(SubscribeRequest request, StreamObserver<Ack> responseObserver) {
+    public void sendSubscription(SubscribeRequest request, StreamObserver<Ack> responseObserver) {
         System.out.println("sendSubscription");
         Ack ack = Ack.newBuilder()
                 .setSuccess(true)
