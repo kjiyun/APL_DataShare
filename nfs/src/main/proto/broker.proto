@@ -21,9 +21,14 @@ service BrokerService {
   rpc DeliverDHTKeys(DHTKeyList) returns (Ack);
 }
 
+service FilterExchange {
+  rpc Connect (stream FilterMessage) returns (stream FilterResponse);
+}
+
 message AdvertiseRequest {
-  string odc_id = 1;
+  string request_id = 1;
   string disease_code = 2; // 질병코드
+  bytes metadata = 3;
 }
 
 message SubscribeRequest {
@@ -51,4 +56,21 @@ message DHTKeyList {
 message Ack {
   bool success = 1;
   string message = 2;
+}
+
+message FilterMessage {
+  string sender_role = 1;
+  string sender_id = 2;
+  string receiver_id = 3;
+  string disease_code = 4;
+
+  string rule_text = 5;     // .drl 파일 내용을 문자열로 전송
+  string mapping_info = 6;  // JSON 형태의 매핑 정보
+
+  string filtered_result = 7;  // ODC일 때만 사용 가능
+}
+
+message FilterResponse {
+  string result = 1;
+  string matchedData = 2;
 }
