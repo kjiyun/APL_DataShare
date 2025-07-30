@@ -22,7 +22,7 @@ service BrokerService {
 }
 
 service FilterExchange {
-  rpc Connect (stream FilterMessage) returns (stream FilterResponse);
+  rpc Connect (stream FilterMessage) returns (stream FilterMessage);
 }
 
 message AdvertiseRequest {
