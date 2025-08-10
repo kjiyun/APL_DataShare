@@ -60,8 +60,22 @@ public class FilterExchangeServiceImpl extends FilterExchangeGrpc.FilterExchange
 
             @Override
             public void onCompleted() {
+                System.out.println("[Broker] stream closed.");
                 responseObserver.onCompleted();
             }
         };
+    }
+
+    public void sendRuleToODC(String odcId, String ruleText, String mappingInfo) {
+        StreamObserver<FilterMessage> responseObserver = odcObservers.get(odcId);
+        if (responseObserver != null) {
+            FilterMessage msg = FilterMessage.newBuilder()
+                    .setRuleText(ruleText)
+                    .setMappingInfo(mappingInfo)
+                    .build();
+            responseObserver.onNext(msg);
+        } else {
+            System.err.println("[Broker] No connected ODC found for id: " + odcId);
+        }
     }
 }

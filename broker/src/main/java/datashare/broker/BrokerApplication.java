@@ -15,7 +15,7 @@ public class BrokerApplication {
 				.addService(new BrokerServiceImpl())
 				.build();
 
-		System.out.println("[Broker] Starting server on port" + server.getPort());
+		System.out.println("[Broker] Starting server on port");
 		server.start();
 		server.awaitTermination();
 	}
